@@ -1,46 +1,39 @@
 'use client'
-import { useEffect, useState } from 'react'
-import { supabase } from '@/lib/supabaseClient'
 import { useRouter } from 'next/navigation'
-import { Salesperson } from '../types/types' 
-
+import useSalespeople from './hooks/useSalespeople'
+import Header from './components/header'
+import SalespersonCard from './components/SalespersonCard'
 
 export default function SelectPage() {
-  // Use Salesperson[] instead of any[]
-  const [salespeople, setSalespeople] = useState<Salesperson[]>([])
+  const { salespeople, loading } = useSalespeople()
   const router = useRouter()
-
-  useEffect(() => {
-    const fetchSalespeople = async () => {
-      const { data } = await supabase
-        .from('sales')
-        .select('id, salesperson_name, sales_count')
-
-      setSalespeople(data || [])
-    }
-    fetchSalespeople()
-  }, [])
 
   const handleSelect = (id: string) => {
     document.cookie = `salesperson_id=${id}; path=/; max-age=86400` // 24h session
     router.push('/qr')
   }
 
+  if (loading) return (
+    <div className="min-h-screen flex items-center justify-center bg-white text-[#00113a]">
+      Loading...
+    </div>
+  )
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-black p-4">
-      <h1 className="text-3xl font-bold mb-8 text-white">Select Salesperson</h1>
-      <div className="grid gap-4 w-full max-w-md">
-        {salespeople.map((sp) => (
-          <button 
-            key={sp.id} 
-            onClick={() => handleSelect(sp.id)}
-            className="w-full px-6 py-4 bg-white rounded-lg shadow hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-          >
-            <div className="text-lg font-medium text-black">{sp.salesperson_name}</div>
-            <div className="text-sm text-gray-600">Sales: {sp.sales_count}</div>
-          </button>
-        ))}
-      </div>
+    <div className="min-h-screen bg-white">
+      <Header title="🏠 Select Team Member" />
+      
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {salespeople.map((sp) => (
+            <SalespersonCard
+              key={sp.id}
+              salesperson={sp}
+              onSelect={handleSelect}
+            />
+          ))}
+        </div>
+      </main>
     </div>
   )
 }
