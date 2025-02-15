@@ -17,7 +17,7 @@ export default function QRPage() {
 
     const fetchData = async () => {
       const { data } = await supabase
-        .from('salespeople')
+        .from('sales')
         .select('*')
         .eq('id', spId)
         .single()
@@ -31,7 +31,7 @@ export default function QRPage() {
 
   return (
     <div>
-      <h1>{salesperson.name}'s QR Code</h1>
+      <h1>{salesperson.salesperson_name}'s QR Code</h1>
       <QRCodeCanvas value={`${process.env.NEXT_PUBLIC_SITE_URL}/checkout/${salesperson.id}`} />
       <p>Total Sales: {salesperson.sales_count}</p>
     </div>
