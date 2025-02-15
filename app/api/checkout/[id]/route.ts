@@ -22,12 +22,28 @@ export async function GET(
         },
       ],
       mode: 'payment',
+      // Add custom fields for student data collection
+      custom_fields: [
+        {
+          key: 'student_id',
+          label: { type: 'custom', custom: 'Student ID' },
+          type: 'text',
+          optional: false, // make it mandatory
+        },
+        {
+          key: 'full_name',
+          label: { type: 'custom', custom: 'Full Name' },
+          type: 'text',
+          optional: false, // make it mandatory
+        },
+      ],
       metadata: {
         salesperson_id: id,
       },
       success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/success`,
       cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/cancel`,
-    })
+    });
+    
 
     return NextResponse.redirect(session.url!)
   } catch (err) {
