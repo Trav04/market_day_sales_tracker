@@ -1,54 +1,51 @@
 'use client'
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useState } from 'react'
 import { QRCodeCanvas } from 'qrcode.react'
 import { createClient } from '@supabase/supabase-js'
-import { Salesperson } from '../../types/types' 
+import { Salesperson } from '../../types/types'
 import Cookies from 'js-cookie'
 
-export default function QRPage() {
+
+
+export default function QrCode() {
   const [salesperson, setSalesperson] = useState<Salesperson | null>(null)
-  
-  // Memoize the Supabase client to avoid recreating it on every render.
-  const supabase = useMemo(
-    () =>
-      createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-      ),
-    []
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   )
 
   useEffect(() => {
     const spId = Cookies.get('salesperson_id')
-    if (!spId) {
-      window.location.href = '/select'
-      return
-    }
+    if (!spId) window.location.href = '/select'
 
-    const fetchData = async () => {
+    const fetchSalesperson = async () => {
       const { data } = await supabase
         .from('sales')
         .select('*')
         .eq('id', spId)
         .single()
-
-      if (data) {
-        setSalesperson(data)
-      }
+        
+      if (data) setSalesperson(data)
     }
-    
-    fetchData()
-  }, [supabase])
+
+    fetchSalesperson()
+  }, [])
 
   if (!salesperson) return <div>Loading...</div>
 
   return (
-    <div>
-    <h1>{salesperson.salesperson_name}&apos;s QR Code</h1>
-      <QRCodeCanvas 
-        value={`${process.env.NEXT_PUBLIC_SITE_URL!}/checkout/${salesperson.id}`} 
+    <div className="p-4">
+      <h1 className="text-2xl mb-4">
+        {salesperson.salesperson_name}&apos;s QR Code
+      </h1>
+      <QRCodeCanvas
+        value={`${process.env.NEXT_PUBLIC_SITE_URL}/api/checkout/${salesperson.id}`}
+        size={256}
+        className="mb-4"
       />
-      <p>Total Sales: {salesperson.sales_count}</p>
+      <p className="text-xl">
+        Total Sales: {salesperson.sales_count}
+      </p>
     </div>
   )
 }
