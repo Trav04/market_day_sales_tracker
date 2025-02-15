@@ -2,23 +2,28 @@ import { NextResponse } from 'next/server'
 import Stripe from 'stripe'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2025-01-27.acacia', 
+  apiVersion: '2025-01-27.acacia',
 })
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } | Promise<{ id: string }> }
 ) {
+  // Await the params before destructuring
+  const { id } = await params
+
   try {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
-      line_items: [{
-        price: process.env.PRICE_ID,
-        quantity: 1,
-      }],
+      line_items: [
+        {
+          price: process.env.PRICE_ID,
+          quantity: 1,
+        },
+      ],
       mode: 'payment',
       metadata: {
-        salesperson_id: params.id
+        salesperson_id: id, // Use the awaited id here
       },
       success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/success`,
       cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/cancel`,
