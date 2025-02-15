@@ -7,7 +7,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } | Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   // Await the params before destructuring
   const { id } = await params
@@ -44,7 +44,6 @@ export async function GET(
       cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/cancel`,
     });
     
-
     return NextResponse.redirect(session.url!)
   } catch (err) {
     return NextResponse.json(
