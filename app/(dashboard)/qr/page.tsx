@@ -1,38 +1,59 @@
 'use client'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import { QRCodeCanvas } from 'qrcode.react'
 import { createClient } from '@supabase/supabase-js'
 import Cookies from 'js-cookie'
 
+// Define a type for the salesperson
+interface Salesperson {
+  id: string;
+  salesperson_name: string;
+  sales_count: number;
+}
+
 export default function QRPage() {
-  const [salesperson, setSalesperson] = useState<any>(null)
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  const [salesperson, setSalesperson] = useState<Salesperson | null>(null)
+  
+  // Memoize the Supabase client to avoid recreating it on every render.
+  const supabase = useMemo(
+    () =>
+      createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+      ),
+    []
   )
 
   useEffect(() => {
     const spId = Cookies.get('salesperson_id')
-    if (!spId) window.location.href = '/select'
+    if (!spId) {
+      window.location.href = '/select'
+      return
+    }
 
     const fetchData = async () => {
       const { data } = await supabase
-        .from('sales')
+        .from<Salesperson>('sales')
         .select('*')
         .eq('id', spId)
         .single()
-      setSalesperson(data)
+
+      if (data) {
+        setSalesperson(data)
+      }
     }
     
     fetchData()
-  }, [])
+  }, [supabase])
 
   if (!salesperson) return <div>Loading...</div>
 
   return (
     <div>
       <h1>{salesperson.salesperson_name}'s QR Code</h1>
-      <QRCodeCanvas value={`${process.env.NEXT_PUBLIC_SITE_URL}/checkout/${salesperson.id}`} />
+      <QRCodeCanvas 
+        value={`${process.env.NEXT_PUBLIC_SITE_URL!}/checkout/${salesperson.id}`} 
+      />
       <p>Total Sales: {salesperson.sales_count}</p>
     </div>
   )
