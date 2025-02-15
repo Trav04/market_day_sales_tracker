@@ -15,9 +15,10 @@ export default function QrCode() {
   const qrCodes: QrCodeCardProps[] = [
     {
       id: salesperson!.id,
-      label: `${salesperson!.salesperson_name}'s QR Code`,
+      label: `UQIES $2 Membership`,
       url: `${process.env.NEXT_PUBLIC_SITE_URL}/api/checkout/${salesperson!.id}`,
     },
+
     // Add more QR code configurations here
   ]
 

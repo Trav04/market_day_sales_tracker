@@ -14,7 +14,7 @@ export default function Header({ salesperson }: HeaderProps) {
         </h1>
         <div className="flex items-center space-x-4">
           <span className="text-white font-medium">
-            Sales Count: {salesperson.sales_count}
+            Membership Sales: {salesperson.sales_count}
           </span>
         </div>
       </div>
