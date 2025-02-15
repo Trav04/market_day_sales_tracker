@@ -2,14 +2,8 @@
 import { useEffect, useState, useMemo } from 'react'
 import { QRCodeCanvas } from 'qrcode.react'
 import { createClient } from '@supabase/supabase-js'
+import { Salesperson } from '../../types/types' 
 import Cookies from 'js-cookie'
-
-// Define a type for the salesperson
-interface Salesperson {
-  id: string;
-  salesperson_name: string;
-  sales_count: number;
-}
 
 export default function QRPage() {
   const [salesperson, setSalesperson] = useState<Salesperson | null>(null)
@@ -33,7 +27,7 @@ export default function QRPage() {
 
     const fetchData = async () => {
       const { data } = await supabase
-        .from<Salesperson>('sales')
+        .from('sales')
         .select('*')
         .eq('id', spId)
         .single()
@@ -50,7 +44,7 @@ export default function QRPage() {
 
   return (
     <div>
-      <h1>{salesperson.salesperson_name}'s QR Code</h1>
+    <h1>{salesperson.salesperson_name}&apos;s QR Code</h1>
       <QRCodeCanvas 
         value={`${process.env.NEXT_PUBLIC_SITE_URL!}/checkout/${salesperson.id}`} 
       />

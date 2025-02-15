@@ -2,17 +2,20 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabaseClient'
 import { useRouter } from 'next/navigation'
+import { Salesperson } from '../types/types' 
+
 
 export default function SelectPage() {
-  const [salespeople, setSalespeople] = useState<any[]>([])
+  // Use Salesperson[] instead of any[]
+  const [salespeople, setSalespeople] = useState<Salesperson[]>([])
   const router = useRouter()
 
   useEffect(() => {
     const fetchSalespeople = async () => {
-      // Include sales_count in the query
       const { data } = await supabase
         .from('sales')
         .select('id, salesperson_name, sales_count')
+
       setSalespeople(data || [])
     }
     fetchSalespeople()
