@@ -23,7 +23,7 @@ export async function GET(
       ],
       mode: 'payment',
       metadata: {
-        salesperson_id: id, // Use the awaited id here
+        salesperson_id: id,
       },
       success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/success`,
       cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/cancel`,
