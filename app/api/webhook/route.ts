@@ -51,27 +51,28 @@ export async function POST(req: Request) {
       )?.text?.value;
 
       // Create/update customer in Stripe
-      if (session.customer) {
+      if (session.customer && typeof session.customer === "string") {
         await stripe.customers.update(session.customer, {
           metadata: {
-            student_id: studentId || 'N/A',
-            salesperson_id: session.metadata?.salesperson_id || 'default'
+            student_id: studentId || "N/A",
+            salesperson_id: session.metadata?.salesperson_id || "default",
           },
           name: `${firstName} ${lastName}`,
-          phone: session.customer_details?.phone || undefined
+          phone: session.customer_details?.phone || undefined,
         });
       } else if (session.customer_email) {
         // Create new customer if none exists
-        const customer = await stripe.customers.create({
+        await stripe.customers.create({
           email: session.customer_email,
           name: `${firstName} ${lastName}`,
           phone: session.customer_details?.phone || undefined,
           metadata: {
-            student_id: studentId || 'N/A',
-            salesperson_id: session.metadata?.salesperson_id || 'default'
-          }
+            student_id: studentId || "N/A",
+            salesperson_id: session.metadata?.salesperson_id || "default",
+          },
         });
       }
+      
       const salespersonId = session.metadata?.salesperson_id;
     
       console.log('Received checkout.session.completed event for salesperson:', salespersonId);
