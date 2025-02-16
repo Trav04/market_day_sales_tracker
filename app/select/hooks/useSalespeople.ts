@@ -12,6 +12,7 @@ export default function useSalespeople() {
       const { data } = await supabase
         .from('sales')
         .select('id, salesperson_name, sales_count')
+        .order('salesperson_name')
       setSalespeople(data || [])
       setLoading(false)
     }
