@@ -2,6 +2,7 @@
 import useSalesperson from './hooks/useSalesperson'
 import Header from './components/Header'
 import QrCodeCard, { QrCodeCardProps } from './components/QrCodeCard'
+import Link from 'next/link' // Import the Link component
 
 export default function QrCode() {
   const { salesperson, loading } = useSalesperson()
@@ -11,7 +12,8 @@ export default function QrCode() {
       Loading...
     </div>
   )
-const qrCodes: QrCodeCardProps[] = [
+
+  const qrCodes: QrCodeCardProps[] = [
     {
       qr_code_id: `2025Membership`,
       id: salesperson!.id,
@@ -31,10 +33,10 @@ const qrCodes: QrCodeCardProps[] = [
   ]
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white flex flex-col">
       <Header salesperson={salesperson!} />
       
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {qrCodes.map((qr) => (
             <QrCodeCard 
@@ -45,6 +47,16 @@ const qrCodes: QrCodeCardProps[] = [
           ))}
         </div>
       </main>
+
+      {/* Persistent Back Button */}
+      <div className="sticky bottom-0 left-0 bg-white border-t border-gray-200 p-4">
+        <Link 
+          href="/select" // Redirects to app/select/page.tsx
+          className="px-6 py-2 text-sm font-medium text-white bg-[#00113a] hover:bg-[#00113a]/90 rounded-lg transition-colors"
+        >
+          ⬅ Back
+        </Link>
+      </div>
     </div>
   )
 }
