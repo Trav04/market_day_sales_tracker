@@ -22,7 +22,9 @@ export default function SelectPage() {
   return (
     <div className="min-h-screen bg-white">
       <Header title="Select Team Member" />
-      
+      <p className="text-center text-gray-600 my-4">
+        To start, select or tap on your name to access your sales QR codes!
+      </p>
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {salespeople.map((sp) => (
