@@ -49,6 +49,7 @@ export async function GET(
       metadata: {
         salesperson_id: id,
       },
+      customer_creation: 'always',
       success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/membership-payment-success`,
       cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/cancel`,
     });
