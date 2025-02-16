@@ -37,41 +37,41 @@ export async function POST(req: Request) {
     if (event.type === 'checkout.session.completed') {
       const session = event.data.object as Stripe.Checkout.Session;
 
-      // // Extract custom fields from checkout
-      // const studentId = session.custom_fields?.find(
-      //   (field) => field.key === 'student_id'
-      // )?.text?.value;
+      // Extract custom fields from checkout
+      const studentId = session.custom_fields?.find(
+        (field) => field.key === 'student_id'
+      )?.text?.value;
 
-      // const firstName = session.custom_fields?.find(
-      //   (field) => field.key === 'first_name'
-      // )?.text?.value;
+      const firstName = session.custom_fields?.find(
+        (field) => field.key === 'first_name'
+      )?.text?.value;
 
-      // const lastName = session.custom_fields?.find(
-      //   (field) => field.key === 'last_name'
-      // )?.text?.value;
+      const lastName = session.custom_fields?.find(
+        (field) => field.key === 'last_name'
+      )?.text?.value;
 
-      // // Create/update customer in Stripe
-      // if (session.customer && typeof session.customer === "string") {
-      //   await stripe.customers.update(session.customer, {
-      //     metadata: {
-      //       student_id: studentId || "N/A",
-      //       salesperson_id: session.metadata?.salesperson_id || "default",
-      //     },
-      //     name: `${firstName} ${lastName}`,
-      //     phone: session.customer_details?.phone || undefined,
-      //   });
-      // } else if (session.customer_email) {
-      //   // Create new customer if none exists
-      //   await stripe.customers.create({
-      //     email: session.customer_email,
-      //     name: `${firstName} ${lastName}`,
-      //     phone: session.customer_details?.phone || undefined,
-      //     metadata: {
-      //       student_id: studentId || "N/A",
-      //       salesperson_id: session.metadata?.salesperson_id || "default",
-      //     },
-      //   });
-      // }
+      // Create/update customer in Stripe
+      if (session.customer && typeof session.customer === "string") {
+        await stripe.customers.update(session.customer, {
+          metadata: {
+            student_id: studentId || "N/A",
+            salesperson_id: session.metadata?.salesperson_id || "default",
+          },
+          name: `${firstName} ${lastName}`,
+          phone: session.customer_details?.phone || undefined,
+        });
+      } else if (session.customer_email) {
+        // Create new customer if none exists
+        await stripe.customers.create({
+          email: session.customer_email,
+          name: `${firstName} ${lastName}`,
+          phone: session.customer_details?.phone || undefined,
+          metadata: {
+            student_id: studentId || "N/A",
+            salesperson_id: session.metadata?.salesperson_id || "default",
+          },
+        });
+      }
       
       const salespersonId = session.metadata?.salesperson_id;
     
