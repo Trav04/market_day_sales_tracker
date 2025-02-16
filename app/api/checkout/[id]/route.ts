@@ -51,7 +51,7 @@ export async function GET(
       },
       customer_creation: 'always',
       success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/membership-payment-success`,
-      cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/cancel`,
+      cancel_url: `https://www.uqies.com`,
     });
     return NextResponse.redirect(session.url!)
   } catch (err) {
