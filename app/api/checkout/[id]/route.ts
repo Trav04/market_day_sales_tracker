@@ -53,7 +53,6 @@ export async function GET(
       success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/membership-payment-success`,
       cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/cancel`,
     });
-    
     return NextResponse.redirect(session.url!)
   } catch (err) {
     return NextResponse.json(
