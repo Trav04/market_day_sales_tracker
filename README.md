@@ -1,7 +1,3 @@
-Here’s a comprehensive `README.md` for your application. It provides an overview of the project, setup instructions, and details about the Stripe integration.
-
----
-
 # Checkout Application with Stripe Integration
 
 This application handles a checkout flow using Stripe as the payment processor. It integrates with Supabase for backend functionality and supports phone number collection, customer management, and sales attribution.
