@@ -6,6 +6,7 @@ export interface QrCodeCardProps {
   qr_code_id: string
   id: string
   label: string
+  sublabel: string
   url: string
   initialVisible?: boolean
 }
@@ -13,6 +14,7 @@ export interface QrCodeCardProps {
 export default function QrCodeCard({
   qr_code_id,
   label,
+  sublabel,
   url,
   initialVisible = true,
 }: QrCodeCardProps) {
@@ -31,7 +33,10 @@ export default function QrCodeCard({
     >
       <div className="bg-[#00113a] rounded-t-xl p-4">
         <div className="flex justify-between items-center">
-          <h2 className="text-lg font-semibold text-white">{label}</h2>
+          <div className="flex flex-col">
+            <h2 className="text-lg font-semibold text-white">{label}</h2>
+            <span className="text-sm text-white font-normal">{sublabel}</span>
+          </div>
           <button
             onClick={() => setVisible(!visible)}
             // Point to the unique content container

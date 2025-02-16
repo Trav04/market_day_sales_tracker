@@ -16,6 +16,7 @@ const qrCodes: QrCodeCardProps[] = [
       qr_code_id: `2025Membership`,
       id: salesperson!.id,
       label: `UQIES $2 Membership`,
+      sublabel: `Scan to become a UQIES member!`,
       url: `${process.env.NEXT_PUBLIC_SITE_URL}/api/checkout/${salesperson!.id}`,
       initialVisible: true // Starts expanded
     },
@@ -23,6 +24,7 @@ const qrCodes: QrCodeCardProps[] = [
       qr_code_id: `1`,
       id: salesperson!.id,
       label: `SIC Hackathon`,
+      sublabel: `Use coupon MARKETDAY $10 OFF`,
       url: `${process.env.NEXT_PUBLIC_SITE_URL}/api/premium/${salesperson!.id}`,
       initialVisible: false // Starts collapsed
     }
