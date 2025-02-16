@@ -21,6 +21,9 @@ export async function GET(
           quantity: 1,
         },
       ],
+      phone_number_collection: {
+          enabled: true,
+      },
       mode: 'payment',
       // Add custom fields for student data collection
       custom_fields: [
@@ -31,10 +34,16 @@ export async function GET(
           optional: false, // make it mandatory
         },
         {
-          key: 'full_name',
-          label: { type: 'custom', custom: 'Full Name' },
+          key: 'first_name',
+          label: { type: 'custom', custom: 'First Name' },
           type: 'text',
-          optional: false, // make it mandatory
+          optional: false,
+        },
+        {
+          key: 'last_name',
+          label: { type: 'custom', custom: 'Last Name' },
+          type: 'text',
+          optional: false,
         },
       ],
       metadata: {
