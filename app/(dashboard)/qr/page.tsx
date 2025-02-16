@@ -21,11 +21,11 @@ const qrCodes: QrCodeCardProps[] = [
       initialVisible: true // Starts expanded
     },
     {
-      qr_code_id: `1`,
+      qr_code_id: `SICHackathon`,
       id: salesperson!.id,
       label: `SIC Hackathon`,
       sublabel: `Use coupon MARKETDAY $10 OFF`,
-      url: `${process.env.NEXT_PUBLIC_SITE_URL}/api/premium/${salesperson!.id}`,
+      url: `https://lu.ma/mhds7ghc`,
       initialVisible: false // Starts collapsed
     }
   ]
